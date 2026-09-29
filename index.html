@@ -84,7 +84,8 @@
     （1）共價基團在這份庫裡幾何不成立；
     （2）只看口袋占據時最顯眼的是 aprepitant，但它的接受體並沒有進入 NZ 的 3.4 Å 氫鍵門檻；
     （3）加上氫鍵／磺酸根／羧酸根接觸後，較值得再看的是 bicalutamide、hederagenin、infigratinib、glimepiride、cynarin；
-    （4）串上本機 AI 生成器（127.0.0.1:8900）多輪優化 115 個分子後，最好的仍是種子本身（hederagenin 綜合分最高，glimepiride 選擇性最大），沒有新設計勝過它們。
+    （4）串上本機 AI 生成器（127.0.0.1:8900）多輪優化 115 個分子後，最好的仍是種子本身（hederagenin 綜合分最高，glimepiride 選擇性最大），沒有新設計勝過它們；
+    （5）Lys1002 藥效團套在既有 Vina 姿態上，2432 個裡 71 個同時對上側鏈尖端的接受體與 Val998。選擇性 ≥ 0.4 時，Vina 最前面是 risperidone、hederagenin、mitapivat；只看分數、不看選擇性時第一名是 nafamostat，但它的野生型更好。
   </div>
 
   <h2>問題</h2>
@@ -141,6 +142,13 @@
   <table class="picks"><thead><tr><th>標記</th><th>突變體</th><th>野生型</th><th>差值</th><th>目標分</th><th>接觸</th><th>SMILES</th></tr></thead><tbody><tr><td>Hederagenin（種子）</td><td>-6.60</td><td>-6.26</td><td>+0.35</td><td>11.10</td><td>carboxylate 3.05</td><td><code>CC1(C)CC[C@]2(C(=O)O)CC[C@]3(C)C(=CC[C@@H]4[C@@]5(C)CC[C@H](O)[C@@](C)(C…</code></td></tr><tr><td>Glimepiride（種子）</td><td>-6.90</td><td>-5.70</td><td>+1.20</td><td>9.90</td><td>sulfonate 3.38</td><td><code>CCC1=C(C)CN(C(=O)NCCc2ccc(S(=O)(=O)NC(=O)N[C@H]3CC[C@H](C)CC3)cc2)C1=O</code></td></tr><tr><td>Bicalutamide 異構寫法（種子系）</td><td>-6.15</td><td>-5.77</td><td>+0.38</td><td>9.15</td><td>sulfonate 3.32</td><td><code>CC(O)(CS(=O)(=O)c1ccc(F)cc1)C(=O)Nc1ccc(C#N)cc1C(F)(F)F</code></td></tr><tr><td>Bicalutamide（種子）</td><td>-5.95</td><td>-5.62</td><td>+0.32</td><td>6.95</td><td>H-bond 3.30</td><td><code>CC(O)(CS(=O)(=O)c1ccc(F)cc1)C(=O)Nc1ccc(C#N)c(C(F)(F)F)c1</code></td></tr><tr><td>AI 新分子</td><td>-3.86</td><td>-4.14</td><td>-0.28</td><td>6.36</td><td>H-bond 2.92，方向正確</td><td><code>C=C(O)C1OC(=CC=Cc2ccco2)C=CC(C(N)=O)=CC=CC1=O</code></td></tr><tr><td>AI 新分子</td><td>-3.55</td><td>-3.51</td><td>+0.04</td><td>5.55</td><td>sulfonate 3.95</td><td><code>CNC(F)(F)C=C1C=CC(CF)S(=O)(=O)C=C1</code></td></tr><tr><td>AI 新分子</td><td>-3.60</td><td>-3.26</td><td>+0.34</td><td>4.60</td><td>H-bond 3.06</td><td><code>CC(=O)COC1C=CC=CC(O)=CSCCO1</code></td></tr></tbody></table>
   <p>綜合分最高的是 hederagenin 種子本身（突變體 −6.60，羧酸根 3.05 Å，方向正確，選擇性 +0.35）。選擇性最大的是 glimepiride 種子（−6.90 vs −5.70，+1.20）。AI 新分子裡最好的一個突變體只有 −3.86，而且野生型更好（選擇性 −0.28）。完全不給種子的 de novo 批次沒有分子碰到 Lys1002。圍繞 hederagenin 的後續輪次每輪只解出 2–5 個分子，沒有同時保住羧酸根接觸又把 Vina 做深。</p>
 
+  <h2>Lys1002 藥效團，再依 Vina 排序</h2>
+  <p>本機沒有 BIOVIA PharmaDB。這一節用的是同一類受體交互藥效團，直接建在突變體 Lys 上，再套進 HY-L066 已有的 Vina 姿態，而不是先在另一個三維藥庫裡搜、然後重新對接。分數仍是全庫 exhaustiveness 4 的結果。</p>
+  <p>接受體點放在 Lys CA→NZ 再往外 3.2 Å，半徑 2.8 Å，而且對上的那個原子必須離 NZ ≤ 4.0 Å。疏水點放在 Val998 朝向這個接受體的一面，半徑 2.2 Å。Phe977 也設了一個疏水／芳香點，但沒有姿態把碳或芳香環放進去，所以實際篩到的是「接受體 + Val998」。掃描 2432 個姿態，71 個同時套上這兩點。</p>
+  <p>下面只列選擇性 ≥ 0.4 kcal/mol 的 16 個，已按突變體 Vina 由強到弱排列。藥效團擬合是接受體離藥效團中心的距離，愈小愈正中。若只看 Vina、不要求選擇性，第一名是 nafamostat（−6.84），選擇性 −0.43，野生型更好，所以不放進這張表。</p>
+  <table class="picks"><thead><tr><th>藥物</th><th>突變體</th><th>選擇性</th><th>藥效團擬合</th><th>距 NZ</th><th>離子</th></tr></thead><tbody><tr><td>Risperidone</td><td>-6.79</td><td>+0.41</td><td>2.14</td><td>2.84</td><td>—</td></tr><tr><td>Hederagenin</td><td>-6.75</td><td>+0.50</td><td>0.55</td><td>2.94</td><td>carboxylate 2.94</td></tr><tr><td>Mitapivat</td><td>-6.74</td><td>+0.73</td><td>2.19</td><td>2.94</td><td>—</td></tr><tr><td>AZD7545</td><td>-6.62</td><td>+0.46</td><td>2.15</td><td>3.09</td><td>sulfonate 3.09</td></tr><tr><td>Curcumin</td><td>-6.41</td><td>+0.64</td><td>1.66</td><td>2.94</td><td>—</td></tr><tr><td>Terconazole</td><td>-6.41</td><td>+0.60</td><td>2.08</td><td>3.16</td><td>—</td></tr><tr><td>Bicalutamide</td><td>-6.36</td><td>+0.73</td><td>2.53</td><td>2.89</td><td>sulfonate 3.03</td></tr><tr><td>Levonorgestrel</td><td>-6.24</td><td>+0.40</td><td>1.86</td><td>3.19</td><td>—</td></tr><tr><td>Gestodene</td><td>-6.18</td><td>+0.45</td><td>2.20</td><td>3.00</td><td>—</td></tr><tr><td>Amygdalin</td><td>-6.15</td><td>+0.94</td><td>2.13</td><td>3.11</td><td>—</td></tr><tr><td>Elafibranor</td><td>-6.08</td><td>+0.62</td><td>2.34</td><td>3.82</td><td>—</td></tr><tr><td>Genistein</td><td>-5.89</td><td>+0.41</td><td>0.74</td><td>3.09</td><td>—</td></tr><tr><td>Norethisterone enanthate</td><td>-5.88</td><td>+0.48</td><td>2.07</td><td>3.96</td><td>carboxylate 3.96</td></tr><tr><td>Mirodenafil</td><td>-5.83</td><td>+0.76</td><td>2.27</td><td>3.94</td><td>—</td></tr><tr><td>Mycophenolate Mofetil</td><td>-5.74</td><td>+0.52</td><td>2.20</td><td>3.10</td><td>carboxylate 3.07</td></tr><tr><td>Osilodrostat</td><td>-5.50</td><td>+0.44</td><td>2.68</td><td>3.38</td><td>—</td></tr></tbody></table>
+  <p>Hederagenin 的羧酸根離藥效團中心只有 0.55 Å，也有離子接觸。Bicalutamide 的磺酸根仍在 NZ 3.03 Å，選擇性 +0.73，在這份藥效團清單裡 Vina 居中。Risperidone 與 mitapivat 分數接近，但沒有羧酸根或磺酸根對準 NZ。</p>
+
   <h2>目前最值得再驗的藥</h2>
   <h3>以 NZ 接觸為準（目前主排序）</h3>
   <p>結構沒有被拉回去之後，剩下的目標是蓋住 1002K 的 NH₂。共價藥沒有達標。非共價改用氫鍵／離子接觸排序；口袋占據分數單獨不夠。</p>
@@ -159,6 +167,7 @@
     <li>口袋占據：aprepitant 選擇性最大（+1.93 kcal/mol，3.03 Å），但沒有 NZ 氫鍵／離子接觸。</li>
     <li>NZ 接觸：bicalutamide、hederagenin（離子＋幾何）、infigratinib／rilpivirine（幾何氫鍵）、glimepiride／cynarin（離子）較值得再看。</li>
     <li>AI 多輪：115 個分子沒有新結構勝過這些種子；最好的仍是 hederagenin／glimepiride 本身。</li>
+    <li>藥效團：71 個姿態同時對上 Lys 側鏈尖端的接受體與 Val998。選擇性 ≥ 0.4 時，Vina 較前的是 risperidone、hederagenin、mitapivat、AZD7545、bicalutamide。</li>
     <li>同一批口袋命中在 DynamicBind 裡離開了這個位點，所以 Vina 的口袋姿態換方法就不在了。</li>
   </ul>
   <p>蛋白酶體抑制劑（bortezomib、ixazomib）和 HDAC2/3 抑制劑走的是另一條路：減慢整體降解，或經由 K250 乙醯化影響 APC/C-Cdc20 對 BubR1 的泛素化。它們不結合 1002K。硼酸藥也因原子型態沒有進入這次 Vina 表。HSP90 抑制、IMiD，以及會減少 T1008 磷酸化的 PLK 抑制，和「保住 BubR1」的方向相反，這份篩選沒有把它們當候選。</p>
@@ -171,11 +180,12 @@
     <li>氫鍵／離子判斷是幾何門檻，不是能量分解；Vina 也沒有共價項。</li>
     <li>DynamicBind 樣本少，lDDT 不高，不能排除別的結合模式，只能說這次取樣沒有支持「藥留在 1002K 並把 loop 拉回去」。</li>
     <li>AI 生成器的內部多輪優化是性質梯度（QED／SA／logP），不是對接分數；外層才用 Vina 過濾。模型詞彙與序列長度也限制了大分子類似物的產量。</li>
+    <li>藥效團不是商業 PharmaDB。它套在既有 Vina 姿態上，所以沒有獨立於這個姿態的三維構象搜尋。Phe977 的疏水點沒有命中，實際只有接受體與 Val998 兩點。</li>
     <li>泛素受體是否真的是 1002，以及 E3 是哪一個，這份計算沒有測定。</li>
   </ul>
 
   <footer>
-    <p>方法：Kabsch 疊合 UniProt 956–995；SASA 為 Shrake–Rupley、探針 1.4 Å。Vina 1.2.7（突變體／野生型親和圖）。DynamicBind paper weights，inference steps 10，samples per complex 2，no relax。HY-L066 全庫篩選；NZ 接觸重評既有姿態；AI 生成接 127.0.0.1:8900，報告只列命中與計數，不含完整目錄或商業試算表。</p>
+    <p>方法：Kabsch 疊合 UniProt 956–995；SASA 為 Shrake–Rupley、探針 1.4 Å。Vina 1.2.7（突變體／野生型親和圖）。DynamicBind paper weights，inference steps 10，samples per complex 2，no relax。HY-L066 全庫篩選；NZ 接觸重評既有姿態；AI 生成接 127.0.0.1:8900；Lys1002 藥效團套在既有姿態上再依 Vina 排序。報告只列命中與計數，不含完整目錄或商業試算表。</p>
   </footer>
 </main>
 <script id="wt-pdb" type="application/json"></script>
