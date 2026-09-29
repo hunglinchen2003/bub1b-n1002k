@@ -75,12 +75,16 @@
 </head>
 <body>
 <main>
-  <p class="meta">BUB1B / BubR1 · UniProt O60566 · 計算篩選報告 · 2026-09-29</p>
-  <h1>N1002K 不能靠這份藥庫逆轉結構，也沒有藥專一擋住這顆 Lys 的泛素化</h1>
-  <p class="lede">AlphaFold 的激酶區模型裡，1002–1012 相對野生型移了約 4–6 Å。整庫 AutoDock Vina 之後，再把突變體偏好的命中送進 DynamicBind，這一段沒有被拉回去。藥庫裡也沒有 NHS ester 或 sulfonyl fluoride 能共價佔住新 Lys 的 NH₂。</p>
+  <p class="meta">BUB1B / BubR1 · UniProt O60566 · 計算篩選報告 · 2026-09-30</p>
+  <h1>N1002K：結構沒逆轉；擋 Lys 的候選是離子／氫鍵接觸，不是口袋占據分數</h1>
+  <p class="lede">AlphaFold 激酶區裡 1002–1012 相對野生型移了約 4–6 Å。HY-L066 全庫 Vina 後，突變體偏好的命中在 DynamicBind 裡沒有把這段拉回去，配體也離開了 K 口袋。藥庫沒有 NHS ester／sulfonyl fluoride。再用既有姿態做 Lys NZ 的氫鍵／離子篩選，以及本機 AI 潛在空間生成器多輪對接，都沒有出現「新分子勝過種子藥」的結果。</p>
   <div class="answer">
     <strong>結論。</strong>
-    這是計算假說，不是用藥建議。若目標改成專一結合 1002K、讓 E3 無法泛素化，這份 FDA／藥典庫裡沒有合格的分子。最接近的非共價姿態是 aprepitant（突變體 −7.66 kcal/mol，比野生型好 1.9 kcal/mol，最近重原子距 NZ 3.0 Å）。差距只有約 2 kcal/mol，而且 DynamicBind 沒有把配體留在這顆 Lys 旁邊。
+    這是計算假說，不是用藥建議。若目標是蓋住突變 Lys 的 NH₂、讓 E3 接不上泛素：
+    （1）共價基團在這份庫裡幾何不成立；
+    （2）只看口袋占據時最顯眼的是 aprepitant，但它的接受體並沒有進入 NZ 的 3.4 Å 氫鍵門檻；
+    （3）加上氫鍵／磺酸根／羧酸根接觸後，較值得再看的是 bicalutamide、hederagenin、infigratinib、glimepiride、cynarin；
+    （4）串上本機 AI 生成器（127.0.0.1:8900）多輪優化 115 個分子後，最好的仍是種子本身（hederagenin 綜合分最高，glimepiride 選擇性最大），沒有新設計勝過它們。
   </div>
 
   <h2>問題</h2>
@@ -125,34 +129,53 @@
   <table><thead><tr><th>藥物</th><th>親和力</th><th>lDDT</th><th>1002–1012 RMSD</th><th>相對空結構</th><th>距 K1002</th></tr></thead><tbody><tr><td>Fluralaner</td><td>6.14</td><td>0.45</td><td>6.86</td><td>-1.87</td><td>25.4</td></tr><tr><td>Zafirlukast</td><td>6.44</td><td>0.49</td><td>6.90</td><td>-1.91</td><td>25.6</td></tr><tr><td>Aprepitant</td><td>6.37</td><td>0.50</td><td>6.73</td><td>-1.74</td><td>26.8</td></tr><tr><td>Momelotinib</td><td>6.10</td><td>0.51</td><td>6.78</td><td>-1.79</td><td>27.3</td></tr><tr><td>Rilpivirine</td><td>6.63</td><td>0.57</td><td>6.65</td><td>-1.66</td><td>28.2</td></tr><tr><td>Resmetirom</td><td>8.06</td><td>0.47</td><td>6.71</td><td>-1.72</td><td>29.1</td></tr><tr><td>Tucatinib</td><td>7.07</td><td>0.51</td><td>6.62</td><td>-1.63</td><td>29.3</td></tr><tr><td>Siponimod</td><td>5.72</td><td>0.48</td><td>6.94</td><td>-1.95</td><td>29.3</td></tr><tr><td>Danicopan</td><td>7.19</td><td>0.47</td><td>6.67</td><td>-1.68</td><td>29.6</td></tr><tr><td>Apixaban</td><td>5.78</td><td>0.54</td><td>6.66</td><td>-1.67</td><td>30.1</td></tr><tr><td>Liquiritin</td><td>5.12</td><td>0.59</td><td>6.65</td><td>-1.66</td><td>30.3</td></tr><tr><td>Nilotinib</td><td>6.58</td><td>0.53</td><td>6.80</td><td>-1.81</td><td>31.3</td></tr><tr><td>Siramesine hydrochloride</td><td>5.88</td><td>0.46</td><td>6.96</td><td>-1.97</td><td>31.9</td></tr></tbody></table>
   <p>「相對空結構」是空結構 RMSD 減去全結構 RMSD。負值表示這一段離野生型更遠。Vina 把藥放進 K1002 盒子；DynamicBind 的取樣沒有把它們留在那裡。</p>
 
+  <h2>Lys NZ 的氫鍵與離子接觸</h2>
+  <p>結構沒有逆轉之後，目標改成專一蓋住 1002K。在既有突變體／野生型 Vina 姿態上重評：配體接受體（OA／NA／S／SA，或未質子化 N）距 NZ ≤ 3.4 Å 算氫鍵；該接受體再距 NZ 上的氫 ≤ 2.5 Å 算幾何合理；羧酸根／磺酸根／磷酸根氧距 NZ ≤ 4.0 Å 算離子接觸。突變體專一是指突變體有氫鍵，而野生型姿態接受體離 Asn ND2 超過 3.4 Å。</p>
+  <p>254 個化合物至少有一種接觸。下面只列突變體 ≤ −6.3、選擇性 ≥ 0.5，而且有離子接觸或幾何氫鍵的子集（12 個）。離子接觸對突變體比較有意義，因為野生型 Asn 不是陽離子。</p>
+  <table><thead><tr><th>藥物</th><th>突變體</th><th>差值</th><th>NZ 距離</th><th>幾何</th><th>離子</th><th>突變體專一</th></tr></thead><tbody><tr><td>Bicalutamide</td><td>-6.36</td><td>+0.73</td><td>2.89</td><td>是</td><td>sulfonate 3.03</td><td>是</td></tr><tr><td>Hederagenin</td><td>-6.75</td><td>+0.50</td><td>2.94</td><td>是</td><td>carboxylate 2.94</td><td>是</td></tr><tr><td>Cynarin</td><td>-6.56</td><td>+0.99</td><td>3.09</td><td>否</td><td>carboxylate 3.09</td><td>是</td></tr><tr><td>Glimepiride</td><td>-6.76</td><td>+0.92</td><td>3.15</td><td>否</td><td>sulfonate 3.15</td><td>是</td></tr><tr><td>Glibenclamide</td><td>-6.45</td><td>+0.91</td><td>3.30</td><td>否</td><td>sulfonate 3.30</td><td>是</td></tr><tr><td>Carotegrast methyl</td><td>-6.97</td><td>+0.85</td><td>3.78</td><td>否</td><td>carboxylate 3.78</td><td>否</td></tr><tr><td>Nicergoline</td><td>-6.35</td><td>+0.66</td><td>3.08</td><td>否</td><td>carboxylate 3.08</td><td>是</td></tr><tr><td>Infigratinib</td><td>-6.79</td><td>+1.30</td><td>3.17</td><td>是</td><td>—</td><td>是</td></tr><tr><td>Rilpivirine</td><td>-7.32</td><td>+0.99</td><td>3.37</td><td>是</td><td>—</td><td>是</td></tr><tr><td>Mitapivat</td><td>-6.74</td><td>+0.73</td><td>2.94</td><td>是</td><td>—</td><td>是</td></tr><tr><td>Curcumin</td><td>-6.41</td><td>+0.64</td><td>2.94</td><td>是</td><td>—</td><td>是</td></tr><tr><td>Ripretinib</td><td>-6.76</td><td>+0.59</td><td>2.98</td><td>是</td><td>—</td><td>是</td></tr></tbody></table>
+  <p>Aprepitant 與 nilotinib 在口袋占據排序裡很前面，但接受體沒有進入 3.4 Å 氫鍵門檻，所以不在這張表。Bicalutamide 的磺酸根 3.03 Å、幾何正確、突變體專一。Hederagenin 羧酸根 2.94 Å。Infigratinib 沒有離子基團，但幾何氫鍵 3.17 Å、選擇性 +1.30。</p>
+
+  <h2>AI 潛在空間多輪優化</h2>
+  <p>第二階段藥庫改接本機生成器 <code>http://127.0.0.1:8900/</code>（F:\2026@GenMolecule，RTX 3060）。流程：生成 → Meeko 製備 → 突變體親和圖 Vina（exhaustiveness 8）→ 只保留仍接觸 NZ 的分子當下一輪種子。Vina-GPU 核心與這張卡不相容，對接仍用 CPU 地圖。生成器原本每次 <code>torch.manual_seed(11)</code>，同一條 SMILES 會得到同一批分子；API 加了可選 <code>rng</code> 之後每一輪才會換樣。</p>
+  <p>種子來自上面的接觸命中：bicalutamide、glimepiride、infigratinib、rilpivirine、cynarin、hederagenin，加上一批「類藥、分子量約 480」的 de novo。共對接 115 個獨特分子，其中 7 個同時有 Vina 分數與 NZ 接觸。目標分只在有接觸時計算：−Vina，再依氫鍵（+1）、幾何（+1.5）、離子（+2）加分。停在第 4 輪無增益。前 8 名再對野生型地圖，選擇性 = 野生型分數 − 突變體分數。</p>
+  <table class="picks"><thead><tr><th>標記</th><th>突變體</th><th>野生型</th><th>差值</th><th>目標分</th><th>接觸</th><th>SMILES</th></tr></thead><tbody><tr><td>Hederagenin（種子）</td><td>-6.60</td><td>-6.26</td><td>+0.35</td><td>11.10</td><td>carboxylate 3.05</td><td><code>CC1(C)CC[C@]2(C(=O)O)CC[C@]3(C)C(=CC[C@@H]4[C@@]5(C)CC[C@H](O)[C@@](C)(C…</code></td></tr><tr><td>Glimepiride（種子）</td><td>-6.90</td><td>-5.70</td><td>+1.20</td><td>9.90</td><td>sulfonate 3.38</td><td><code>CCC1=C(C)CN(C(=O)NCCc2ccc(S(=O)(=O)NC(=O)N[C@H]3CC[C@H](C)CC3)cc2)C1=O</code></td></tr><tr><td>Bicalutamide 異構寫法（種子系）</td><td>-6.15</td><td>-5.77</td><td>+0.38</td><td>9.15</td><td>sulfonate 3.32</td><td><code>CC(O)(CS(=O)(=O)c1ccc(F)cc1)C(=O)Nc1ccc(C#N)cc1C(F)(F)F</code></td></tr><tr><td>Bicalutamide（種子）</td><td>-5.95</td><td>-5.62</td><td>+0.32</td><td>6.95</td><td>H-bond 3.30</td><td><code>CC(O)(CS(=O)(=O)c1ccc(F)cc1)C(=O)Nc1ccc(C#N)c(C(F)(F)F)c1</code></td></tr><tr><td>AI 新分子</td><td>-3.86</td><td>-4.14</td><td>-0.28</td><td>6.36</td><td>H-bond 2.92，方向正確</td><td><code>C=C(O)C1OC(=CC=Cc2ccco2)C=CC(C(N)=O)=CC=CC1=O</code></td></tr><tr><td>AI 新分子</td><td>-3.55</td><td>-3.51</td><td>+0.04</td><td>5.55</td><td>sulfonate 3.95</td><td><code>CNC(F)(F)C=C1C=CC(CF)S(=O)(=O)C=C1</code></td></tr><tr><td>AI 新分子</td><td>-3.60</td><td>-3.26</td><td>+0.34</td><td>4.60</td><td>H-bond 3.06</td><td><code>CC(=O)COC1C=CC=CC(O)=CSCCO1</code></td></tr></tbody></table>
+  <p>綜合分最高的是 hederagenin 種子本身（突變體 −6.60，羧酸根 3.05 Å，方向正確，選擇性 +0.35）。選擇性最大的是 glimepiride 種子（−6.90 vs −5.70，+1.20）。AI 新分子裡最好的一個突變體只有 −3.86，而且野生型更好（選擇性 −0.28）。完全不給種子的 de novo 批次沒有分子碰到 Lys1002。圍繞 hederagenin 的後續輪次每輪只解出 2–5 個分子，沒有同時保住羧酸根接觸又把 Vina 做深。</p>
+
   <h2>目前最值得再驗的藥</h2>
-  <p>結構沒有被拉回去之後，剩下的目標是蓋住 1002K 的 NH₂，讓 E3 接不上泛素。共價藥沒有達標。非共價姿態用兩件事一起排：最近重原子離 NZ 夠近，而且突變體分數明顯好過野生型。照這個標準，第一是 aprepitant。</p>
-  <table class="picks"><thead><tr><th>順序</th><th>藥物</th><th>突變體</th><th>差值</th><th>距 NZ</th><th>理由</th></tr></thead><tbody><tr><td>1</td><td>Aprepitant</td><td>-7.66</td><td>+1.93</td><td>3.03</td><td>離 NZ 近，突變體偏好最大</td></tr><tr><td>2</td><td>Nilotinib</td><td>-8.28</td><td>+1.18</td><td>4.00</td><td>口袋分數最強，離 NZ 較遠</td></tr><tr><td>3</td><td>Liquiritin</td><td>-7.47</td><td>+1.12</td><td>3.56</td><td>距離與選擇性都居中</td></tr><tr><td>4</td><td>Rilpivirine</td><td>-7.32</td><td>+0.99</td><td>3.37</td><td>距 NZ 3.4 Å</td></tr><tr><td>5</td><td>Tucatinib</td><td>-7.72</td><td>+0.87</td><td>3.37</td><td>距 NZ 3.4 Å，分數較強</td></tr></tbody></table>
-  <p>Aprepitant 是 NK1 受體拮抗劑。突變體 −7.66 kcal/mol、野生型 −5.73，差距 1.93 kcal/mol，是這次口袋篩選裡最大的。最近重原子距 NZ 3.03 Å，5 Å 內有 4 個重原子。NZ 就是泛素要接的原子；若這個姿態是真的，配體擋在胺基前面，野生型的 Asn 又沒有這個 NH₂。</p>
-  <p>Nilotinib 的突變體分數更強（−8.28），也比野生型好 1.18 kcal/mol，但最近原子在 4.0 Å，比較像停在口袋裡，沒有蓋住胺基末端。Liquiritin、rilpivirine、tucatinib 落在中間：約 3.4–3.6 Å，選擇性約 0.9–1.1 kcal/mol。Mitapivat 和 tegoprazan 可以靠近到 2.9 Å，分數只有約 −6.7，選擇性不到 0.8。</p>
+  <h3>以 NZ 接觸為準（目前主排序）</h3>
+  <p>結構沒有被拉回去之後，剩下的目標是蓋住 1002K 的 NH₂。共價藥沒有達標。非共價改用氫鍵／離子接觸排序；口袋占據分數單獨不夠。</p>
+  <table class="picks"><thead><tr><th>順序</th><th>藥物</th><th>突變體</th><th>差值</th><th>接觸</th><th>理由</th></tr></thead><tbody><tr><td>1</td><td>Bicalutamide</td><td>-6.36</td><td>+0.73</td><td>sulfonate 3.03</td><td>磺酸根 3.03 Å，氫鍵方向正確，突變體專一</td></tr><tr><td>2</td><td>Hederagenin</td><td>-6.75</td><td>+0.50</td><td>carboxylate 2.94</td><td>羧酸根 2.94 Å，方向正確；AI 迴圈綜合分數最高</td></tr><tr><td>3</td><td>Infigratinib</td><td>-6.79</td><td>+1.30</td><td>H-bond 3.17</td><td>幾何氫鍵 3.17 Å，選擇性 +1.30，突變體專一</td></tr><tr><td>4</td><td>Glimepiride</td><td>-6.76</td><td>+0.92</td><td>sulfonate 3.15</td><td>磺酸根 3.15 Å；AI 種子裡選擇性最大（+1.20）</td></tr><tr><td>5</td><td>Cynarin</td><td>-6.56</td><td>+0.99</td><td>carboxylate 3.09</td><td>羧酸根 3.09 Å，選擇性 +0.99</td></tr></tbody></table>
+  <p>Bicalutamide 同時有磺酸根離子接觸與正確氫鍵方向，突變體專一。Hederagenin 的羧酸根同樣對準 NZ，在 AI 迴圈裡綜合分最高，但選擇性只有約 0.3–0.5 kcal/mol。Infigratinib 選擇性最大（+1.30），靠的是幾何氫鍵而不是陰離子。Glimepiride 在 AI 野生型對照裡選擇性最大。Cynarin 羧酸根選擇性接近 1 kcal/mol。</p>
+  <h3>早期口袋占據排序（對照，已降級）</h3>
+  <p>下面是只看「最近重原子離 NZ 夠近 + 突變體分數好過野生型」時的順序。Aprepitant 仍是這條標準的第一名，但後續互動篩選顯示它沒有 NZ 氫鍵／離子接觸，所以不當成擋胺基的首選。</p>
+  <table class="picks"><thead><tr><th>順序</th><th>藥物</th><th>突變體</th><th>差值</th><th>距 NZ</th><th>理由</th></tr></thead><tbody><tr><td>1</td><td>Aprepitant</td><td>-7.66</td><td>+1.93</td><td>3.03</td><td>離 NZ 近，突變體偏好最大（僅口袋占據）</td></tr><tr><td>2</td><td>Nilotinib</td><td>-8.28</td><td>+1.18</td><td>4.00</td><td>口袋分數最強，離 NZ 較遠</td></tr><tr><td>3</td><td>Liquiritin</td><td>-7.47</td><td>+1.12</td><td>3.56</td><td>距離與選擇性都居中</td></tr><tr><td>4</td><td>Rilpivirine</td><td>-7.32</td><td>+0.99</td><td>3.37</td><td>距 NZ 3.4 Å；後續互動篩選仍有幾何氫鍵</td></tr><tr><td>5</td><td>Tucatinib</td><td>-7.72</td><td>+0.87</td><td>3.37</td><td>距 NZ 3.4 Å，分數較強</td></tr></tbody></table>
+  <p>Aprepitant 是 NK1 受體拮抗劑。突變體 −7.66 kcal/mol、野生型 −5.73，差距 1.93 kcal/mol，是口袋篩選裡最大的。最近重原子距 NZ 3.03 Å，但接受體未進入 3.4 Å。Nilotinib 突變體分數更強（−8.28），最近原子在 4.0 Å。1–2 kcal/mol 只是輕微偏好。這 13 個藥在 DynamicBind 裡離 K1002 約 26–32 Å。</p>
   <p>Gossypol 的其他原子可以到 3.5 Å，醛碳仍在 7.2 Å，不能當成共價抑制 1002K 的藥。Bortezomib 和 HDAC 抑制劑作用在泛素化之後的降解，或 K250 乙醯化，不佔據這顆 Lys。</p>
-  <p>1–2 kcal/mol 只是輕微偏好。這 13 個藥在 DynamicBind 裡離 K1002 約 26–32 Å，換一個方法口袋姿態就不見了。這裡列的是下一步最值得用實驗看 NZ 是否被擋住的順序，不是用藥建議。</p>
 
   <h2>擋住泛素化這件事</h2>
-  <p>專一結合 1002K、讓 E3 無法把泛素接到這顆 NH₂ 上，需要配體穩定地蓋住 NZ，或和它成共價鍵。這份庫兩項都沒有達到。</p>
+  <p>專一結合 1002K、讓 E3 無法把泛素接到這顆 NH₂ 上，需要配體穩定地蓋住 NZ，或和它成共價鍵。這份庫共價沒有達標；非共價只有弱的對接接觸。</p>
   <ul>
     <li>共價：沒有反應基團落在 NZ 的 4 Å 內。</li>
-    <li>非共價：aprepitant 是選擇性最大、又靠得最近的一個（+1.93 kcal/mol，3.03 Å）。nilotinib 分數更低（−8.28），選擇性 +1.18，最近原子 4.0 Å。1–2 kcal/mol 是輕微偏好。</li>
-    <li>同一批化合物在 DynamicBind 裡離開了這個位點，所以 Vina 的口袋姿態換方法就不在了。</li>
+    <li>口袋占據：aprepitant 選擇性最大（+1.93 kcal/mol，3.03 Å），但沒有 NZ 氫鍵／離子接觸。</li>
+    <li>NZ 接觸：bicalutamide、hederagenin（離子＋幾何）、infigratinib／rilpivirine（幾何氫鍵）、glimepiride／cynarin（離子）較值得再看。</li>
+    <li>AI 多輪：115 個分子沒有新結構勝過這些種子；最好的仍是 hederagenin／glimepiride 本身。</li>
+    <li>同一批口袋命中在 DynamicBind 裡離開了這個位點，所以 Vina 的口袋姿態換方法就不在了。</li>
   </ul>
   <p>蛋白酶體抑制劑（bortezomib、ixazomib）和 HDAC2/3 抑制劑走的是另一條路：減慢整體降解，或經由 K250 乙醯化影響 APC/C-Cdc20 對 BubR1 的泛素化。它們不結合 1002K。硼酸藥也因原子型態沒有進入這次 Vina 表。HSP90 抑制、IMiD，以及會減少 T1008 磷酸化的 PLK 抑制，和「保住 BubR1」的方向相反，這份篩選沒有把它們當候選。</p>
 
   <h2>限制</h2>
   <ul>
     <li>結構是 AlphaFold 的激酶區片段，不是實驗結構。N 端 pLDDT 很低，沒有拿來下結論。</li>
-    <li>Vina exhaustiveness 為 4，是篩選設定。分數不是測量的結合常數。</li>
-    <li>5 Å 口袋定義很寬。選擇性表才是要看的子集。</li>
+    <li>Vina exhaustiveness 為 4（全庫）或 8（AI 迴圈），是篩選設定。分數不是測量的結合常數。</li>
+    <li>5 Å 口袋定義很寬。選擇性表與 NZ 接觸表才是要看的子集。</li>
+    <li>氫鍵／離子判斷是幾何門檻，不是能量分解；Vina 也沒有共價項。</li>
     <li>DynamicBind 樣本少，lDDT 不高，不能排除別的結合模式，只能說這次取樣沒有支持「藥留在 1002K 並把 loop 拉回去」。</li>
+    <li>AI 生成器的內部多輪優化是性質梯度（QED／SA／logP），不是對接分數；外層才用 Vina 過濾。模型詞彙與序列長度也限制了大分子類似物的產量。</li>
     <li>泛素受體是否真的是 1002，以及 E3 是哪一個，這份計算沒有測定。</li>
   </ul>
 
   <footer>
-    <p>方法：Kabsch 疊合 UniProt 956–995；SASA 為 Shrake–Rupley、探針 1.4 Å。Vina 1.2.7。DynamicBind paper weights，inference steps 10，samples per complex 2，no relax。藥庫為 HY-L066，報告只列出命中與計數，不含完整目錄。</p>
+    <p>方法：Kabsch 疊合 UniProt 956–995；SASA 為 Shrake–Rupley、探針 1.4 Å。Vina 1.2.7（突變體／野生型親和圖）。DynamicBind paper weights，inference steps 10，samples per complex 2，no relax。HY-L066 全庫篩選；NZ 接觸重評既有姿態；AI 生成接 127.0.0.1:8900，報告只列命中與計數，不含完整目錄或商業試算表。</p>
   </footer>
 </main>
 <script id="wt-pdb" type="application/json"></script>
