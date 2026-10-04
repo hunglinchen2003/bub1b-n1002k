@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BUB1B N1002K · 兩百萬庫短名單</title>
+<style>
+  :root { color-scheme: light; --ink: #1c1915; --muted: #5c564e; --line: #e4ddd2; --card: #fffdf9; --accent: #1f4e46; }
+  body { margin: 0; font: 17px/1.55 "Segoe UI", "Noto Sans TC", sans-serif; color: var(--ink); background: #f6f1e8; }
+  main { max-width: 1080px; margin: 0 auto; padding: 32px 20px 64px; }
+  h1 { font-size: 1.7rem; line-height: 1.25; margin: 0.2rem 0 0.6rem; }
+  h2 { font-size: 1.2rem; margin: 1.8rem 0 0.4rem; }
+  .meta { color: var(--muted); font-size: 0.92rem; }
+  .answer { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--accent); padding: 12px 16px; }
+  table { width: 100%; border-collapse: collapse; background: var(--card); font-size: 0.86rem; }
+  th, td { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: right; white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  code { font-family: ui-monospace, Consolas, monospace; font-size: 0.84em; }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <p class="meta">BUB1B / BubR1 · N1002K · 兩百萬化合物 Vina 短名單 · 2026-10-04</p>
+  <h1>沒有結構相近的 FDA 藥。短名單裡較像藥的是 CHEMBL1537224；較能蓋住 1002K 的 Vina 姿態是 CHEMBL1365318。</h1>
+  <div class="answer">
+    <strong>結論。</strong>
+    這是計算假說，不是用藥建議。別台電腦用 AutoDock Vina 從約兩百萬個化合物挑出的 10 個 ChEMBL 分子，在本機用同一個 Lys1002 盒子重對接。PubChem 二維相似搜尋（門檻 80，每個查詢最多 12 筆）裡，只有 macimorelin 帶有 FDA 藥理分類，但它和 CHEMBL3781825 的 Morgan 相似度只有 0.17，不算結構類似，因此沒有把它當成候選。HY-L066 裡最接近的是 spiperone（對 CHEMBL1255082 的 Tanimoto 0.60），不是 FDA 核准藥。沒有可替換的核准藥時，用成藥性來排：CHEMBL1537224 的 QED 0.72、hERG 機率 0.15，是這 10 個裡最不像會擋心臟鉀通道的一個。若目標仍是蓋住突變 Lys 的 NH₂，Vina 姿態裡選擇性較好且接受體靠近 NZ 的是 CHEMBL1365318（選擇性 +0.50，接受體 3.08 Å）。DynamicBind 的 rank1 配體離 K1002 約 35 Å，PLIP 沒有看到和 Lys302 的接觸。
+  </div>
+
+  <h2>怎麼讀這張表</h2>
+  <p>Vina 愈負愈緊，單位 kcal/mol。選擇性是野生型分數減突變體分數，正值表示突變體較好。Vina「距 NZ」是突變體姿態裡最近接受體到 Lys1002 NZ 的距離。DynamicBind 親和力愈高，模型認為結合愈強，不是 Kd。DynamicBind「距 K1002」是 rank1 配體最近重原子到 Lys302 NZ 的距離。PLIP 欄是突變體 rank1 有沒有接觸殘基 302（UniProt 1002）。QED 愈接近 1 愈像藥。hERG、AMES 是機率，愈低愈不容易被標成有問題。</p>
+  <table>
+    <thead><tr>
+      <th>化合物</th><th>Vina 突變</th><th>Vina 野生</th><th>選擇性</th><th>Vina 距 NZ</th>
+      <th>DB 突變</th><th>DB 野生</th><th>DB 距 K1002</th><th>PLIP 1002</th>
+      <th>QED</th><th>hERG</th><th>AMES</th><th>口服生物利用</th>
+    </tr></thead>
+    <tbody>
+    <tr><td>CHEMBL4633401</td><td>-7.55</td><td>-7.36</td><td>0.19</td><td>3.22</td><td>7.13</td><td>7.10</td><td>35.4</td><td>無</td><td>0.448</td><td>0.920</td><td>0.419</td><td>0.920</td></tr>
+<tr><td>CHEMBL5816698</td><td>-7.35</td><td>-7.36</td><td>-0.01</td><td>3.01</td><td>4.99</td><td>5.06</td><td>35.0</td><td>無</td><td>0.514</td><td>0.887</td><td>0.208</td><td>0.828</td></tr>
+<tr><td>CHEMBL1365318</td><td>-7.25</td><td>-6.75</td><td>0.50</td><td>3.08</td><td>5.06</td><td>5.04</td><td>36.7</td><td>無</td><td>0.529</td><td>0.734</td><td>0.087</td><td>0.747</td></tr>
+<tr><td>CHEMBL1537224</td><td>-7.24</td><td>-6.91</td><td>0.32</td><td>5.54</td><td>7.26</td><td>7.25</td><td>35.6</td><td>無</td><td>0.717</td><td>0.154</td><td>0.106</td><td>0.899</td></tr>
+<tr><td>CHEMBL1255082</td><td>-7.08</td><td>-6.86</td><td>0.22</td><td>3.39</td><td>5.60</td><td>5.71</td><td>35.5</td><td>無</td><td>0.632</td><td>0.955</td><td>0.349</td><td>0.686</td></tr>
+<tr><td>CHEMBL6015444</td><td>-6.92</td><td>-7.28</td><td>-0.36</td><td>4.63</td><td>5.96</td><td>5.91</td><td>36.3</td><td>無</td><td>0.633</td><td>0.703</td><td>0.137</td><td>0.823</td></tr>
+<tr><td>CHEMBL1445111</td><td>-6.86</td><td>-7.20</td><td>-0.34</td><td>5.45</td><td>5.50</td><td>5.56</td><td>35.7</td><td>無</td><td>0.669</td><td>0.888</td><td>0.082</td><td>0.710</td></tr>
+<tr><td>CHEMBL2042022</td><td>-6.83</td><td>-7.49</td><td>-0.67</td><td>4.29</td><td>7.36</td><td>7.26</td><td>35.9</td><td>無</td><td>0.640</td><td>0.593</td><td>0.208</td><td>0.669</td></tr>
+<tr><td>CHEMBL3781825</td><td>-6.75</td><td>-6.38</td><td>0.36</td><td>5.47</td><td>5.76</td><td>5.62</td><td>36.6</td><td>無</td><td>0.480</td><td>0.599</td><td>0.162</td><td>0.659</td></tr>
+<tr><td>CHEMBL229651</td><td>-6.71</td><td>-7.29</td><td>-0.58</td><td>3.11</td><td>6.26</td><td>6.19</td><td>35.3</td><td>無</td><td>0.442</td><td>0.695</td><td>0.358</td><td>0.766</td></tr>
+    </tbody>
+  </table>
+
+  <h2>建議的先後</h2>
+  <ol>
+    <li><strong>CHEMBL1537224</strong>。成藥性最好：QED 0.717，hERG 0.154，AMES 0.106，預測口服生物利用度 0.899。Vina 突變 -7.24，選擇性 0.32。接受體離 NZ 5.54 Å，沒有直接蓋住胺基。DynamicBind 親和力 7.26，但配體不在 K 口袋。</li>
+    <li><strong>CHEMBL1365318</strong>。Vina 選擇性 0.50，接受體距 NZ 3.08 Å，是短名單裡最接近「蓋住 1002K」的姿態。QED 0.529，hERG 0.734。DynamicBind 親和力只有 5.06，而且 rank1 離開了這個位點。</li>
+    <li><strong>CHEMBL4633401</strong>。本機 Vina 最負（-7.55），接受體 3.22 Å，選擇性只有 0.19。hERG 0.920，QED 0.448。</li>
+  </ol>
+  <p>其餘 7 個不是選擇性為負，就是 hERG 機率更高，或接受體離 NZ 更遠。CHEMBL2042022 的 DynamicBind 親和力最高（7.36），但 Vina 選擇性 -0.67，野生型更好。</p>
+
+  <h2>FDA 與藥庫近鄰</h2>
+  <p>PubChem fastsimilarity_2d，門檻 80。八個查詢有結果，CHEMBL229651 與 CHEMBL4633401 因立體化學 SMILES 被伺服器回 500。帶 FDA Pharmacological Classification 的只有 macimorelin（CID 9804938），Morgan Tanimoto 對 CHEMBL3781825 為 0.17。HY-L066 裡 Tanimoto ≥ 0.45 的只有 spiperone，對 CHEMBL1255082 為 0.60；它在先前全庫 Vina 的突變體分數是 −6.48、選擇性 +0.98，但不是 FDA 核准藥。</p>
+  <p>十個查詢的 SMILES：</p>
+  <ul>
+    <li><code>CHEMBL4633401</code> <code>O=c1[nH]/c(=C\c2cc3ccccc3o2)c(=O)[nH]/c1=C\c1cccc(Oc2ccc(F)cc2)c1</code></li><li><code>CHEMBL5816698</code> <code>O=C(c1ccc(OCc2ccccc2)cc1)N1CCN(c2nc3ccccc3c(=O)[nH]2)CC1</code></li><li><code>CHEMBL1365318</code> <code>O=C(Cc1ccc(-n2c(=O)[nH]c3ccccc3c2=O)cc1)N1CCN(c2ccccc2)CC1</code></li><li><code>CHEMBL1537224</code> <code>O=C1CCC(=O)N1N1C(=O)C2C3c4ccccc4C(c4ccccc43)C2C1=O</code></li><li><code>CHEMBL1255082</code> <code>O=C(NCCN1CCC2(CC1)C(=O)NCN2c1ccc(F)cc1)c1ccc2ccccc2c1</code></li><li><code>CHEMBL6015444</code> <code>O=C1OC2(CCN(C3=NC(=O)C4(CCCc5ccccc54)O3)CC2)c2ccccc21</code></li><li><code>CHEMBL1445111</code> <code>O=C(C1CCC(Cn2c(=O)[nH]c3ccccc3c2=O)CC1)N1CCN(c2ccccc2)CC1</code></li><li><code>CHEMBL2042022</code> <code>CC1(C)C=Cc2c(ccc3c2NC(=O)[C@@]32C[C@@]34NC(=O)[C@]5(CCCN5C3=O)C[C@H]4C2(C)C)O1</code></li><li><code>CHEMBL3781825</code> <code>O=C1[C@@H]2Cc3c([nH]c4ccccc34)CN2C(=O)[C@@H]2Cc3c([nH]c4ccccc34)CN12</code></li><li><code>CHEMBL229651</code> <code>O=C1N/C(=C\c2c[nH]c3ccccc23)C(=O)N2Cc3[nH]c4ccccc4c3C[C@@H]12</code></li>
+  </ul>
+
+  <h2>姿態與 PLIP</h2>
+  <p>DynamicBind 使用論文權重、10 steps、每個複合物 2 個樣本、不做 relax。Rank1 受體、配體與複合物在 <code>analysis/chembl10/top1/mut</code> 和 <code>top1/wt</code>。PLIP 3.0.1 讀的是把配體 SDF 併進受體 PDB 的複合物。突變體 rank1 的相互作用落在其他殘基（包含 UniProt K795，也就是模型裡的 Lys95），沒有落在 Lys302。</p>
+
+  <h2>限制</h2>
+  <ul>
+    <li>別台電腦的兩百萬庫 Vina 分數沒有附在這份名單裡。本機分數是用 Lys1002 盒子、預先算好的親和圖、exhaustiveness 8、種子 17 重跑的。</li>
+    <li>DynamicBind 取樣沒有把配體留在 1002K。它的高親和力不能解讀成「擋住這顆 Lys」。</li>
+    <li>ADMET 是 admet-ai 的分類／回歸機率，不是實驗值。這 10 個的 DILI 機率普遍偏高。</li>
+    <li>PubChem 相似不是 Morgan 指紋。FDA 標記用的是頁面上的 FDA Pharmacological Classification，不是橘皮書的逐筆核對。</li>
+  </ul>
+  <p class="meta">回到 <a href="index.html">N1002K 全庫報告</a>。</p>
+</main>
+</body>
+</html>
