@@ -165,11 +165,11 @@
 </section>
 
 <section id="structure">
-  <h2>AlphaFold kinase overlay</h2>
-  <p>Kinase-only models, UniProt 700–1050. Drag to rotate. Teal = wild type. Brick = N1002K. The stick at the C-lobe is residue 1002.</p>
+  <h2>AlphaFold N1002K kinase</h2>
+  <p>Mutant kinase only, UniProt 700–1050. Drag to rotate. Brick cartoon is N1002K; orange sticks and the label mark <b>K1002</b>.</p>
   <div class="fig">
     <div id="viewport" class="mol"></div>
-    <div class="figcap">Figure. Local AlphaFold kinase models. Global Cα RMSD on full-length AF3 monomers is 33.5 Å because disordered linkers and KARD are placed differently; the kinase fold itself overlays at 0.45 Å. The biologically useful displacement is the 4–6 Å shift of 1002–1012 after a high-confidence core alignment.</div>
+    <div class="figcap">Figure. Local AlphaFold kinase model of the N1002K mutant. Orange sticks = Lys1002. The WT overlay is omitted so the mutated lysine is easy to find.</div>
   </div>
   <div class="grid2">
     <div class="card">
@@ -322,28 +322,31 @@
   el.style.position = "relative";
   el.style.overflow = "hidden";
   const viewer = $3Dmol.createViewer(el, { backgroundColor: "#fbf8f1" });
-  function load(url, color, het) {
-    return fetch(url).then(r => r.text()).then(data => {
-      viewer.addModel(data, "pdb");
-      const m = viewer.getModel(viewer.getModel().length ? undefined : 0);
-      viewer.setStyle({ model: viewer.getModel().id }, { cartoon: { color: color, opacity: 0.92 } });
-      viewer.addStyle({ resn: het ? "LYS" : "ASN", resi: 1002 }, { stick: { colorscheme: "orangeCarbon", radius: 0.28 } });
-    });
-  }
-  Promise.all([
-    fetch("assets/wt_kinase.pdb").then(r => r.text()),
-    fetch("assets/mut_kinase.pdb").then(r => r.text())
-  ]).then(([wt, mut]) => {
-    viewer.addModel(wt, "pdb");
-    viewer.setStyle({ model: 0 }, { cartoon: { color: "#1e5f5a", opacity: 0.9 } });
-    viewer.addStyle({ model: 0, resi: 1002 }, { stick: { color: "#b0893e", radius: 0.3 } });
+  fetch("assets/mut_kinase.pdb").then(r => r.text()).then(mut => {
     viewer.addModel(mut, "pdb");
-    viewer.setStyle({ model: 1 }, { cartoon: { color: "#9b2c2c", opacity: 0.72 } });
-    viewer.addStyle({ model: 1, resi: 1002 }, { stick: { color: "#e07a2f", radius: 0.3 } });
+    viewer.setStyle({}, { cartoon: { color: "#9b2c2c", opacity: 0.92 } });
+    viewer.setStyle({ resi: 1002 }, {
+      cartoon: { color: "#e07a2f" },
+      stick: { colorscheme: "orangeCarbon", radius: 0.32 }
+    });
+    viewer.addStyle({ resi: 1002, atom: "NZ" }, { sphere: { color: "#e07a2f", radius: 0.7 } });
+    const ca = viewer.selectedAtoms({ resi: 1002, atom: "CA" })[0];
+    viewer.addLabel("K1002", {
+      position: ca,
+      alignment: "center",
+      inFront: true,
+      fontSize: 16,
+      fontColor: "#9b2c2c",
+      backgroundColor: "#fffdf8",
+      backgroundOpacity: 0.92,
+      borderThickness: 1.2,
+      borderColor: "#9b2c2c",
+      showBackground: true
+    });
     viewer.zoomTo();
     viewer.render();
   }).catch(() => {
-    el.innerHTML = "<p style='padding:16px;color:#5c655f'>3D models did not load. Open this page over GitHub Pages so <code>assets/*.pdb</code> are served.</p>";
+    el.innerHTML = "<p style='padding:16px;color:#5c655f'>3D model did not load. Open this page over GitHub Pages so <code>assets/mut_kinase.pdb</code> is served.</p>";
   });
 })();
 </script>
